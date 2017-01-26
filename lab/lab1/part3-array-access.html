@@ -75,9 +75,17 @@
 
     ===================== */
 
-    L.marker([0, 0]).addTo(map);
-    L.marker([0, 0]).addTo(map);
-    L.marker([0, 0]).addTo(map);
+
+    var restaurantData = [[39.955771, -75.201652, "Jiangnanfu"],[39.952485, -75.199386, "1920 Commons"]]
+    // Two restaurants saved in an array
+
+    var restaurantDataAdd = restaurantData.push([39.954345, -75.202363, "McDonald's"])
+
+    for (i = 0; i <= restaurantData.length; i++){
+      L.marker([restaurantData[i][0], restaurantData[i][1]]).addTo(map).bindPopup(restaurantData[i][2]).openPopup();
+    }
+
+
 
     /* =====================
 

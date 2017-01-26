@@ -55,10 +55,69 @@
 
       ===================== */
 
+
       var jsonToCsv = function(json) { console.log(json); };
 
 
       var addMarkers = function(map) {};
+
+
+      // Original Data: log all healthCenters
+
+      console.log(healthCenters);
+
+
+      // log an array of arrays in which the first sub-array contains keys and the rest of the arrays contain the 'rows' of our data
+      // Variables we want to keep: LNG, LAT, NAME, FULL_ADDRESS, PHONE, WEBSITE, ZIP
+
+      var healthCentersArray = [["Name", "Phone", "Website", "Address", "Zip Code", "Latitude", "Longitude"]];
+
+      for(i = 0; i <= healthCenters.length-1; i++){     // Note to self: don't forget to "-1" form the length!
+        var healthCentersArray_Add = healthCentersArray.push([
+          healthCenters[i]["NAME"],
+          healthCenters[i]["PHONE"],
+          healthCenters[i]["DENTAL_PHONE"],
+          healthCenters[i]["WEBSITE"],
+          healthCenters[i]["FULL_ADDRESS"],
+          healthCenters[i]["ZIP"],
+          healthCenters[i]["LAT"],
+          healthCenters[i]["LNG"]])
+      };
+
+      console.log(healthCentersArray);
+
+
+      // Create a for loop for markers and popups for those in zipcodes 19140-19149 (which do not provide dental services)
+
+      for (i = 1; i <= healthCentersArray.length-1; i++){
+        if(healthCentersArray[i][5] >= 19140 & healthCentersArray[i][5] <= 19149 & healthCentersArray[i][2] == "N/A"){
+          L.marker([healthCentersArray[i][6], healthCentersArray[i][7]]).addTo(map).bindPopup(healthCentersArray[i][0]+" (Phone: "+healthCentersArray[i][1]+", Zipcode: "+healthCentersArray[i][5]+")").openPopup();
+        }
+      }
+
+
+      // Extra: Use different icon for those that provide dental services
+
+      // Create new icon
+
+      var myIcon = L.icon({
+        iconUrl: 'images/marker-icon.png',
+        iconRetinaUrl: 'images/marker-icon-2x.png',
+        iconSize: [25, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+        shadowUrl: 'images/layers.png',
+        shadowRetinaUrl: 'images/layers-2x.png',
+        shadowSize: [25, 40],
+        shadowAnchor: [22,70]
+      });
+
+      for (i = 1; i <= healthCentersArray.length-1; i++){
+        if(healthCentersArray[i][5] >= 19140 & healthCentersArray[i][5] <= 19149 & healthCentersArray[i][2] != "N/A"){
+          L.marker([healthCentersArray[i][6], healthCentersArray[i][7]], {icon: myIcon}).addTo(map).bindPopup(healthCentersArray[i][0]+" (Phone: "+healthCentersArray[i][1]+", Zipcode: "+healthCentersArray[i][5]+")").openPopup();
+        }
+      }
+
 
       /* =====================
 
